@@ -22,7 +22,7 @@ const pegaValor = (comp, adic) => {
       const li = document.createElement('li');
       li.className = 'cart__item';
       li.innerText = e;
-      li.addEventListener('click', addEvent);
+      li.addEventListener('click', adic);
       comp.appendChild(li);
     });
   }
