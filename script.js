@@ -1,5 +1,7 @@
 /* PARTE 04 */
 const cartList = document.querySelector('.cart__items');
+/* PARTE 05 */
+const classePreco = '.total-price';
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -26,8 +28,23 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+/* PARTE 05 */
+/* https://www.javascripttutorial.net/javascript-string-slice/ */
+function menorPreco(itemX) {
+  const totalPreco = (document.querySelector(classePreco));
+  let totalPrecoNum = parseFloat(totalPreco.innerText);
+  const text = itemX.innerText;
+  const price = text.slice(text.indexOf('PRICE: $') + 'PRICE: $'.length);
+  const priceNum = parseFloat(price);
+  totalPrecoNum -= priceNum;
+  totalPreco.innerText = totalPrecoNum;
+  localStorage.setItem('totalPriceCart', totalPreco.innerText);
+}
+
 /* PARTE 03 */
 function cartItemClickListener(event) {
+  /* PARTE 05 */
+  menorPreco(event.target);
   event.target.remove();
   /* PARTE 04 */
   saveCartItems();
@@ -41,11 +58,23 @@ async function addList(id, xx) {
   saveCartItems();
 }
 
+/* PARTE 05 */
+function somaPreco(precoItem) {
+  const totalPreco = (document.querySelector(classePreco));
+  let totalPrecoNum = parseFloat(totalPreco.innerText);
+  const itemPreco = parseFloat(precoItem);
+  totalPrecoNum += itemPreco;
+  totalPreco.innerText = totalPrecoNum;
+  localStorage.setItem('totalPriceCart', totalPreco.innerText);
+}
+
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
+  /* PARTE 05 */
+  somaPreco(salePrice);
   /* const cart = document.querySelector('.cart__items');
   cart.appendChild(li); */
   /* PARTE 04 */
@@ -77,6 +106,19 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+function precoSalvo() {
+  const tamCart = localStorage.getItem('two');
+  const totalPreco = document.querySelector(classePreco);
+  if (tamCart !== null) {
+    if (tamCart.length > 2) {
+      const precoSalvo2 = localStorage.getItem('totalPriceCart');
+      totalPreco.innerText = precoSalvo2;
+    } else {
+      totalPreco.innerText = 0;
+    }
+  }
+}
+
 window.onload = () => {
   fetchProducts('computador').then((data) => {
     data.forEach((e) => {
@@ -87,4 +129,5 @@ window.onload = () => {
   });
   /* PARTE 04 */
   getSavedCartItems(cartList, cartItemClickListener);
+  precoSalvo();
 };
