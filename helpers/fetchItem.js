@@ -1,15 +1,15 @@
 /* REQUISITO 02: Adicione o produto ao carrinho de compras */
 
-async function fetchItem(id) {
-  const endPoint = `https://api.mercadolibre.com/items/${id}`;
+const fetchItem = async (id) => {
   try {
+    const endPoint = `https://api.mercadolibre.com/items/${id}`;
     const resp = await fetch(endPoint);
     const result = await resp.json();
     return result;
   } catch (error) {
-    return error;
+    throw new Error('You must provide an url');
   }
-}
+};
 
 if (typeof module !== 'undefined') {
   module.exports = {
