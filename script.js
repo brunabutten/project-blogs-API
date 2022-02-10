@@ -1,6 +1,6 @@
 /* https://www.youtube.com/watch?v=De5np8phQxo&t=2422s */
 const listCart = document.querySelector('.cart__items');
-const listProducts = JSON.parse(getSavedCartItems()) || []; 
+const listProducts = JSON.parse(getSavedCartItems()) || [];
 /* Converte string para objeto */
 
 function createProductImageElement(imageSource) {
@@ -26,10 +26,6 @@ function somaPreco() {
   document.querySelector('.total-price').innerText = parseFloat(somaPrecos);
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
-
 /* REQUISITO 03: https://stackoverflow.com/questions/36326612/how-to-delete-an-item-from-state-array */
 function cartItemClickListener(event) {
   /* 2 posição do classList */
@@ -39,8 +35,8 @@ function cartItemClickListener(event) {
   const indexProd = listProducts.findIndex((product) => product.id === sku);
   if (indexProd > -1) {
     listProducts.splice(indexProduct, 1);
-   }
-   /* Salva a lista atual no localStorage */
+  }
+  /* Salva a lista atual no localStorage */
   saveCartItems(JSON.stringify(listProducts));
   somaPreco();
   event.target.remove();
@@ -49,7 +45,7 @@ function cartItemClickListener(event) {
 function createCartItemElement(product) {
   const li = document.createElement('li');
   /* REQUISITO 05: Some o valor total dos itens do carrinho de compras */
-  li.className = `cart__item ${product.id}`; 
+  li.className = `cart__item ${product.id}`;
   li.innerText = `SKU: ${product.id} | NAME: ${product.name} | PRICE: $${product.price}`;
   li.addEventListener('click', cartItemClickListener);
   listCart.appendChild(li);
@@ -120,8 +116,9 @@ function buttonClear() {
 }
 
 window.onload = () => {
+  createCart();
   createItem();
   meuLocal();
   somaPreco();
   buttonClear();
- };
+};
