@@ -1,5 +1,7 @@
+/* REQUISITO 04: Carregue o carrinho de compras através do LocalStorage ao iniciar a página */
 const getSavedCartItems = () => {
-  // seu código aqui
+  const list = window.localStorage.getItem('carItems');
+  return list;
 };
 
 if (typeof module !== 'undefined') {

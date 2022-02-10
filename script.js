@@ -12,16 +12,13 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
-function createProductItemElement({ sku, name, image }) {
-  const section = document.createElement('section');
-  section.className = 'item';
-
-  section.appendChild(createCustomElement('span', 'item__sku', sku));
-  section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createProductImageElement(image));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
-  return section;
+/* REQUISITO 05: Some o valor total dos itens do carrinho de compras */
+function somaPreco() {
+  let somaPrecos = 0;
+  for (let index = 0; index < listProducts.length; index += 1) {
+    somaPrecos += listProducts[index].price;
+  }
+  document.querySelector('.total-price').innerText = parseFloat(somaPrecos);
 }
 
 function getSkuFromProductItem(item) {
@@ -32,12 +29,64 @@ function cartItemClickListener(event) {
   // coloque seu código aqui
 }
 
-function createCartItemElement({ sku, name, salePrice }) {
+function createCartItemElement(product) {
   const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  /* REQUISITO 05: Some o valor total dos itens do carrinho de compras */
+  li.className = `cart__item ${product.id}`; 
+  li.innerText = `SKU: ${product.id} | NAME: ${product.name} | PRICE: $${product.price}`;
   li.addEventListener('click', cartItemClickListener);
-  return li;
+  listCart.appendChild(li);
 }
 
-window.onload = () => { };
+/* REQUISITO 02: Adicione o produto ao carrinho de compras */
+async function createCart(elemento) {
+  const produto = elemento.target.parentElement.firstChild.innerText;
+  const product = await fetchItem(produto);
+  const lightProduct = {
+    id: product.id,
+    name: product.title,
+    price: product.price,
+  };
+  createCartItemElement(lightProduct);
+  listProducts.push(lightProduct);
+  /* REQUISITO 04: Carregue o carrinho de compras através do LocalStorage ao iniciar a página */
+  saveCartItems(JSON.stringify(listProducts));
+  /* REQUISITO 05: Some o valor total dos itens do carrinho de compras */
+  somaPreco();
+}
+
+function createProductItemElement({ id: sku, title: name, thumbnail: image }) {
+  const section = document.createElement('section');
+  section.className = 'item';
+
+  section.appendChild(createCustomElement('span', 'item__sku', sku));
+  section.appendChild(createCustomElement('span', 'item__title', name));
+  section.appendChild(createProductImageElement(image));
+  /* REQUISITO 02: Adicione o produto ao carrinho de compras */
+  const addCarrinho = createCustomElement('button', 'item__add', 'Adicionar ao carrinho');
+  addCarrinho.addEventListener('click', createCart);
+  section.appendChild(addCarrinho);
+  /* section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!')); */
+  return section;
+}
+
+/* REQUISITO 07: Adicione um texto de "carregando" durante uma requisição à API */
+function textLoader() {
+  document.querySelector('.loading').innerText = 'carregando...';
+}
+
+/* REQUISITO 01: Crie uma listagem de produtos */
+async function createItem() {
+  textLoader();
+  const response = await fetchProducts('computador');
+  const item = document.querySelector('.items');
+  document.querySelector('.loading').remove();
+  response.forEach((current) => {
+    item.appendChild(createProductItemElement(current));
+  });
+}
+
+window.onload = () => {
+  createItem();
+  somaPreco();
+ };
