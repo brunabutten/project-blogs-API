@@ -1,3 +1,8 @@
+/* https://www.youtube.com/watch?v=De5np8phQxo&t=2422s */
+const listCart = document.querySelector('.cart__items');
+const listProducts = JSON.parse(getSavedCartItems()) || []; 
+/* Converte string para objeto */
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -25,8 +30,20 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
+/* REQUISITO 03: https://stackoverflow.com/questions/36326612/how-to-delete-an-item-from-state-array */
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  /* 2 posição do classList */
+  console.log(event.target.classList[1]);
+  /* Req 5 soma */
+  const sku = event.target.classList[1];
+  const indexProd = listProducts.findIndex((product) => product.id === sku);
+  if (indexProd > -1) {
+    listProducts.splice(indexProduct, 1);
+   }
+   /* Salva a lista atual no localStorage */
+  saveCartItems(JSON.stringify(listProducts));
+  somaPreco();
+  event.target.remove();
 }
 
 function createCartItemElement(product) {
@@ -39,8 +56,8 @@ function createCartItemElement(product) {
 }
 
 /* REQUISITO 02: Adicione o produto ao carrinho de compras */
-async function createCart(elemento) {
-  const produto = elemento.target.parentElement.firstChild.innerText;
+async function createCart(element) {
+  const produto = element.target.parentElement.firstChild.innerText;
   const product = await fetchItem(produto);
   const lightProduct = {
     id: product.id,
@@ -86,7 +103,14 @@ async function createItem() {
   });
 }
 
+/* REQUISITO 04 */
+function meuLocal() {
+  const salvaProduto = JSON.parse(getSavedCartItems()) || [];
+  salvaProduto.forEach(createCartItemElement);
+}
+
 window.onload = () => {
   createItem();
+  meuLocal();
   somaPreco();
  };
