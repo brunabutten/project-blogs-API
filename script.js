@@ -4,6 +4,15 @@ const listaCarrinho = document.querySelector('.cart__items');
 const classePreco = '.total-price';
 /* PARTE 06 */
 const removeItens = document.querySelector('.empty-cart');
+/* PARTE 07 */
+const loading = document.querySelector('.loading');
+
+function createCustomElement(element, className, innerText) {
+  const e = document.createElement(element);
+  e.className = className;
+  e.innerText = innerText;
+  return e;
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -31,13 +40,6 @@ const createObj = (item) => {
   return x;
 };
 
-function createCustomElement(element, className, innerText) {
-  const e = document.createElement(element);
-  e.className = className;
-  e.innerText = innerText;
-  return e;
-}
-
 /* PARTE 05 */
 /* https://www.javascripttutorial.net/javascript-string-slice/ */
 function menorPreco(itemX) {
@@ -58,6 +60,11 @@ function cartItemClickListener(event) {
   event.target.remove();
   /* PARTE 04 */
   saveCartItems();
+}
+
+/* PARTE 07 */
+function fimLoading() {
+  loading.remove();
 }
 
 /* PARTE 04 */
@@ -131,6 +138,8 @@ function precoSalvo() {
 
 window.onload = () => {
   fetchProducts('computador').then((data) => {
+    /* PARTE 07 */
+    fimLoading();
     data.forEach((e) => {
       /* PARTE 02 */
       const product = createObj(e);
