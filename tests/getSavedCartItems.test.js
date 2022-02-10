@@ -1,17 +1,16 @@
-const localStorageSimulator = require('../mocks/localStorageSimulator');
 const getSavedCartItems = require('../helpers/getSavedCartItems');
 
 localStorageSimulator('getItem');
 
-/* REQUISITO 11 */
+/* PARTE 11 */
 describe('4 - Teste a função getSavedCartItems', () => {
-  it('Teste se, ao executar getSavedCartItems, o método localStorage.getItem é chamado', () => {
+  it('1. Teste se, ao executar getSavedCartItems, o método localStorage.getItem é chamado', () => {
     getSavedCartItems();
     expect(localStorage.getItem).toBeCalled();
   });
-  
-  it('Teste se, ao executar getSavedCartItems, o método localStorage.getItem é chamado com o "cartItems" como parâmetro', () => {
+
+  it('2. Teste se, ao executar getSavedCartItems, o método localStorage.getItem é chamado com o "cartItems" como parâmetro', () => {
     getSavedCartItems();
-    expect(localStorage.setItem).toHaveBeenCalledWith('carItems');
+    expect(localStorage.setItem).toBeCalledWith('carItems');
   });
 });

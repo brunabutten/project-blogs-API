@@ -1,4 +1,4 @@
-/* REQUISITO 01 */
+/* PARTE 01 */
 
 const fetchProducts = (product) => {
   if (!product) throw new Error('You must provide an url');

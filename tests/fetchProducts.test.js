@@ -2,7 +2,7 @@ require('../mocks/fetchSimulator');
 const { fetchProducts } = require('../helpers/fetchProducts');
 const computadorSearch = require('../mocks/search');
 
-/* REQUISITO 08 */
+/* PARTE 08 */
 
 describe('1 - Teste a função fecthProducts', () => {
   it('1. Teste se fetchProducts é uma função', () => {

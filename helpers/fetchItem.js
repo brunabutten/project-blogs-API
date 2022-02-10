@@ -1,4 +1,4 @@
-/* REQUISITO 02 */
+/* PARTE 02 */
 
 const fetchItem = (idItem) => {
   if (!idItem) throw new Error('You must provide an url');
