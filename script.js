@@ -109,8 +109,19 @@ function meuLocal() {
   salvaProduto.forEach(createCartItemElement);
 }
 
+/* REQUISITO 06: Implemente a lógica no botão Esvaziar carrinho para limpar o carrinho de compras */
+function buttonClear() {
+  buttonClear1 = document.querySelector('.empty-cart');
+  buttonClear1.addEventListener('click', () => {
+    document.querySelector('.cart__items').innerHTML = '';
+    window.localStorage.clear();
+    document.querySelector('.total-price').innerText = '';
+  });
+}
+
 window.onload = () => {
   createItem();
   meuLocal();
   somaPreco();
+  buttonClear();
  };
