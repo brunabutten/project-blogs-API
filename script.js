@@ -23,8 +23,9 @@ function createCustomElement(element, className, innerText) {
   return e;
 }
 
+/* REQUISITO 03 */
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+  event.target.remove();
 }
 
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
