@@ -7,6 +7,27 @@ const removeItens = document.querySelector('.empty-cart');
 /* PARTE 07 */
 const loading = document.querySelector('.loading');
 
+const defineTwo = () => {
+  const listValor = document.querySelectorAll('.cart__item');
+  const x = [];
+  listValor.forEach((e) => x.push(e.textContent));
+  saveCartItems(x);
+};
+
+const pegaValor = (comp, adic) => {
+  const local = getSavedCartItems();
+  const a = JSON.parse(local);
+  if (a !== null && a !== undefined) {
+    a.forEach((e) => {
+      const li = document.createElement('li');
+      li.className = 'cart__item';
+      li.innerText = e;
+      li.addEventListener('click', addEvent);
+      comp.appendChild(li);
+    });
+  }
+};
+
 function createCustomElement(element, className, innerText) {
   const e = document.createElement(element);
   e.className = className;
@@ -26,7 +47,7 @@ removeItens.addEventListener('click', () => {
   listaCarrinho.innerHTML = '';
   const price = document.querySelector(classePreco);
   price.innerHTML = 0;
-  saveCartItems();
+  defineTwo();
 });
 
 /* PARTE 02 */
@@ -59,7 +80,7 @@ function cartItemClickListener(event) {
   menorPreco(event.target);
   event.target.remove();
   /* PARTE 04 */
-  saveCartItems();
+  defineTwo();
 }
 
 /* PARTE 07 */
@@ -72,7 +93,7 @@ async function addList(id, xx) {
   const x = await fetchItem(id);
   const z = createObj(x);
   xx(z);
-  saveCartItems();
+  defineTwo();
 }
 
 /* PARTE 05 */
@@ -119,12 +140,8 @@ function createProductItemElement({ id: sku, title: name, thumbnail: image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
-
 function precoSalvo() {
-  const tamCart = localStorage.getItem('two');
+  const tamCart = localStorage.getItem('cartItems');
   const totalPreco = document.querySelector(classePreco);
   if (tamCart !== null) {
     if (tamCart.length > 2) {
@@ -140,13 +157,13 @@ window.onload = () => {
   fetchProducts('computador').then((data) => {
     /* PARTE 07 */
     fimLoading();
-    data.forEach((e) => {
+    data.results.forEach((e) => {
       /* PARTE 02 */
       const product = createObj(e);
       createProductItemElement(product);
     });
   });
   /* PARTE 04 */
-  getSavedCartItems(listaCarrinho, cartItemClickListener);
+  pegaValor(listaCarrinho, cartItemClickListener);
   precoSalvo();
 };
